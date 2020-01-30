@@ -1,4 +1,4 @@
-package i_can_win.page;
+package bring_it_on;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,6 +16,9 @@ public class PastebinHomePage {
     @FindBy(id = "paste_code")
     private WebElement pasteField;
 
+    @FindBy(name = "paste_format")
+    private WebElement syntaxInput;
+
     @FindBy(name = "paste_expire_date")
     private WebElement expirationInput;
 
@@ -25,9 +28,6 @@ public class PastebinHomePage {
     @FindBy(id = "submit")
     private WebElement submitButton;
 
-    @FindBy(id = "success")
-    private WebElement note;
-
     public PastebinHomePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -35,8 +35,7 @@ public class PastebinHomePage {
 
     public PastebinHomePage openPage() {
         driver.get(HOMEPAGE_URL);
-        new WebDriverWait(driver, 10)
-            .until(CustomConditions.jQueryAJAXsCompleted());
+        new WebDriverWait(driver, 10).until(CustomConditions.jQueryAJAXsCompleted());
         return this;
     }
 
@@ -45,9 +44,13 @@ public class PastebinHomePage {
         return this;
     }
 
+    public PastebinHomePage setSyntaxType(String syntaxType) {
+        selectFromDropList(syntaxInput, syntaxType);
+        return this;
+    }
+
     public PastebinHomePage pasteExpiration(String expirationTerm) {
-        Select droplist = new Select(expirationInput);
-        droplist.selectByVisibleText(expirationTerm);
+        selectFromDropList(expirationInput, expirationTerm);
         return this;
     }
 
@@ -56,8 +59,13 @@ public class PastebinHomePage {
         return this;
     }
 
-    public boolean submit() {
+    public PastebinResultPage submit() {
         submitButton.submit();
-        return note.getText().contains("Your guest paste has been posted.");
+        return new PastebinResultPage(driver);
+    }
+
+    private void selectFromDropList(WebElement webElement, String selection) {
+        Select dropList = new Select(webElement);
+        dropList.selectByVisibleText(selection);
     }
 }

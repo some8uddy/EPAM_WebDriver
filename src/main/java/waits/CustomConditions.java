@@ -11,7 +11,7 @@ public class CustomConditions {
             public Boolean apply( WebDriver driver) {
                 return (Boolean) ((JavascriptExecutor) driver)
                     .executeScript("return (window.jQuery != null) " +
-                        "&& (jQuery.active == 0); ");
+                        "&& (jQuery.active === 0); ");
             }
         };
     }
