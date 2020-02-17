@@ -35,19 +35,19 @@ public class PastebinHomePageTest {
             .submit();
     }
 
-    @Test
+    @Test(priority = 1)
     public void checkPageTitle() {
         String actualTitle = createdPaste.getPageTitle();
         Assert.assertTrue(actualTitle.contains(TITLE), "Page title is wrong!!!");
     }
 
-    @Test
+    @Test(priority = 2)
     public void checkSyntaxHighlighting() {
         String actualSyntax = createdPaste.getSyntaxType();
         Assert.assertEquals(SYNTAX_TYPE, actualSyntax, "Syntax highlighting is wrong!!!");
     }
 
-    @Test
+    @Test(priority = 2)
     public void checkCodeIsCorrect() {
         String actualCode = createdPaste.getDisplayedCode();
         Assert.assertEquals(MESSAGE, actualCode, "Pasted code is wrong!!!");
